@@ -293,3 +293,24 @@ def download_data(source: str, destination: str, remove_source: bool = True) -> 
             os.remove(data_path / target_file)
 
     return image_path
+
+
+from typing import Dict, List, Tuple
+
+
+def find_classes(directory: str) -> tuple[List[str], Dict[str, int]]:
+    """Finds the class folder names in a target directory.
+
+
+    Args:
+        directory (str): Path of the Targert directory
+
+    Returns:
+        tuple[List[str], Dict[str,int]]:
+    """
+    classes = sorted(entry.name for entry in os.scandir(directory) if entry.is_dir())
+    if not classes:
+        raise FileNotFoundError(f"Couldn't find any classes in {directory}.")
+
+    class_to_idx = {cls_name: i for i, cls_name in enumerate(classes)}
+    return classes, class_to_idx
